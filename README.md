@@ -159,6 +159,11 @@ PATCH /checkin?id=1
 }
 ```
 
+## Docker Info
+```bash
+docker build -t book-management-api .
+docker run -p 8080:8080 book-management-api
+```
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a pull request.

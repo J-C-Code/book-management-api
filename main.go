@@ -140,5 +140,5 @@ func main() {
 	router.PATCH("/checkin", returnBook)
 
 	// RUN ROUTER
-	router.Run("localhost:8080")
+	router.Run(":8080")
 }
