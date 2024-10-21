@@ -5,7 +5,13 @@ import (
 
 	"errors"
 
+	"log"
+	"os"
+
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+	"github.com/newrelic/go-agent/v3/integrations/nrgin"
+	"github.com/newrelic/go-agent/v3/newrelic"
 )
 
 // DEFINING STRUCT HERE FOR BOOKS
@@ -125,9 +131,31 @@ func returnBook(c *gin.Context) {
 }
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	// Get the license key from the environment variable
+	licenseKey := os.Getenv("BOOK_API_LICENSE_KEY")
+	if licenseKey == "" {
+		log.Fatal("License key is not set")
+	}
+
+	app, err := newrelic.NewApplication(
+		newrelic.ConfigAppName("book-api"),            // Replace with your application name
+		newrelic.ConfigLicense(licenseKey),            // Replace with your license key
+		newrelic.ConfigDistributedTracerEnabled(true), // Optional: enables distributed tracing
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("New Relic startup success")
 	// DEFINE ROUTER USING GIN
 	router := gin.Default()
 
+	router.Use(nrgin.Middleware(app))
 	// GET ROUTING
 	router.GET("/books", getBooks)
 	router.GET("/books/:id", bookByID)

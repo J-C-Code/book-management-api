@@ -23,6 +23,11 @@ git clone https://github.com/Jomma52637/book-management-api.git
 cd book-management-api
 ```
 
+### Create a .env file in root directory
+```env
+BOOK_API_LICENSE_KEY=your_license_key_here
+```
+
 ### Install Dependencies
 
 Make sure to have the Gin framework installed. You can do this by running:
